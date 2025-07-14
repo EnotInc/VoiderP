@@ -1,4 +1,5 @@
-# VoiderPrototypeo
+# VoiderP
+Voider Python / Voider Prototype
 
 # Что такое Voider?
 
