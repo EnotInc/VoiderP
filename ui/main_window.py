@@ -1,10 +1,12 @@
 from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog
+from sources.styles import apply_theme
 
 from core.file_manager import FileManager
 from core.text_buffer import TextBuffer
 
 from ui.editor import TextEditor
 from ui.file_tree import TreeView
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -29,32 +31,10 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(splitter)
         self.resize(1000, 600)
         self.setMinimumSize(400, 300)
- 
-        self.setStyleSheet("""
-            QMainWindow, QWidget {
-                background-color: #000000;
-                color: #ffffff;
-            }
-            QTreeView {
-                background-color: #000000;
-                color: #ffffff;
-                border: none;
-            }
-            QTreeView::item:hover {
-                background-color: #333333;
-            }
-            QTreeView::item:selected {
-                background-color: #333333;
-            }
-            QSplitter::handle {
-                width: 1px;
-                background: #000000;
-            }
-            QSplitter::handle:hover {
-                background: #333333; 
-            }
-        """)
 
+        apply_theme(self, 'dark')
+ 
+ 
     def _center_of_monitor(self):
 
         screen_geometry = self.screen().availableGeometry()
@@ -77,6 +57,17 @@ class MainWindow(QMainWindow):
         save_action = file_menu.addAction("Save")
         save_action.triggered.connect(self._on_save)
     
+        view_menu = menu.addMenu("View")
+        theme_menu = view_menu.addMenu('Theme')
+        
+        light = theme_menu.addAction("Light")
+        light.triggered.connect(lambda: apply_theme(self, 'light'))
+        dark = theme_menu.addAction("Dark")
+        dark.triggered.connect(lambda: apply_theme(self, 'dark'))
+        console = theme_menu.addAction("Console")
+        console.triggered.connect(lambda: apply_theme(self, 'console'))
+
+
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
         self.editor._sync_with_buffer()

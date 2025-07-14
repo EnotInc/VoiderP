@@ -41,22 +41,7 @@ class TreeView(QTreeView):
         self.treemodel.setRootPath(QDir.currentPath())
         self.setModel(self.treemodel)
 
-        self.setStyleSheet("""
-            QTreeView{
-                font-size: 16px;
-                font-family: consolas;
-            }
-
-            QTreeView::branch {
-                border: 0px;
-                width: 0px;
-                image: none;
-            }
-
-            QTreeView::item{
-                padding: 1px;
-            }
-        """)
+        self.setStyleSheet("QTreeView::branch{image: none;}")
 
         self.setHeaderHidden(True)
         self.hideColumn(1)
@@ -67,4 +52,3 @@ class TreeView(QTreeView):
         path = self.model().filePath(index)
         if path and not self.model().isDir(index):
             self.file_manager.load_file(path)
-            print(path)
