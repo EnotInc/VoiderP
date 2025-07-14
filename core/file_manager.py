@@ -2,16 +2,21 @@ class FileManager():
     def __init__(self, text_buffer):
         self.buffer = text_buffer
         # тут будет подгрузка корневого файла
-        pass
 
     def load_file(self, path):
-        with open(path, "r") as f:
-            self.buffer.text = f.read()
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                self.buffer.text = f.read()
+        except Exception as e:
+            print(e)
 
     def save_file(self, path):
-        path = path
-        with open(path, "w") as f:
-            f.write(self.buffer.text)
+        try:
+            path = path
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(self.buffer.text)
+        except Exception as e:
+            print(e)
 
     def create_new_file():
         pass

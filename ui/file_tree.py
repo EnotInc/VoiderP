@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QDir
 from PyQt6.QtWidgets import QTreeView
-from PyQt6.QtGui import QFileSystemModel, QIcon
+from PyQt6.QtGui import QFileSystemModel
 
 
 class CustomFileModel(QFileSystemModel):
@@ -32,8 +32,10 @@ class CustomFileModel(QFileSystemModel):
         return super().data(index, role)
 
 class TreeView(QTreeView):
-    def __init__(self):
+    def __init__(self, file_manager):
         super().__init__()
+
+        self.file_manager = file_manager
 
         self.treemodel = CustomFileModel(self)
         self.treemodel.setRootPath(QDir.currentPath())
@@ -60,3 +62,9 @@ class TreeView(QTreeView):
         self.hideColumn(1)
         self.hideColumn(2)
         self.hideColumn(3)
+
+    def load_file(self, index):
+        path = self.model().filePath(index)
+        if path and not self.model().isDir(index):
+            self.file_manager.load_file(path)
+            print(path)

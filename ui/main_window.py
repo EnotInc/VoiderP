@@ -16,7 +16,9 @@ class MainWindow(QMainWindow):
         self.file_manager = FileManager(self.buffer) 
         
         self.editor = TextEditor(self.buffer)
-        self.tree_view = TreeView()
+        self.tree_view = TreeView(self.file_manager)
+
+        self.tree_view.doubleClicked.connect(self._file_clicked)
 
         splitter = QSplitter()
         splitter.addWidget(self.tree_view)
@@ -25,9 +27,9 @@ class MainWindow(QMainWindow):
         splitter.setSizes([248, 1000])
 
         self.setCentralWidget(splitter)
-        self.resize(800, 600)
+        self.resize(1000, 600)
         self.setMinimumSize(400, 300)
-        
+ 
         self.setStyleSheet("""
             QMainWindow, QWidget {
                 background-color: #000000;
@@ -75,6 +77,10 @@ class MainWindow(QMainWindow):
         save_action = file_menu.addAction("Save")
         save_action.triggered.connect(self._on_save)
     
+    def _file_clicked(self, index):
+        self.tree_view.load_file(index)
+        self.editor._sync_with_buffer()
+
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
         if path:
