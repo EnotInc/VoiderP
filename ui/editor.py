@@ -16,6 +16,4 @@ class TextEditor(QPlainTextEdit):
 
     def _on_text_changed(self):
         self.buffer.text = self.toPlainText()
-
-    def showEvent(self, event):
-        super().showEvent(event)
+        self.buffer.changed = True

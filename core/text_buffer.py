@@ -1,24 +1,21 @@
 class TextBuffer:
     def __init__(self):
         self._text = ""
-        self.ischanged = False
+        self._changed = False
         
     @property
     def text(self):
-        self.ischanged = False
+        self._changed = False
         return self._text
     
     @text.setter
     def text(self, value):
-        self.ischanged = True
         self._text = value
 
-
     @property
-    def isChanged(self):
-        return self.isChanged
+    def changed(self):
+        return self._changed
 
-    @isChanged.setter
-    def isChanged(self, value: bool):
-        self.isChanged = value
-    
+    @changed.setter
+    def changed(self, value):
+        self._changed = value

@@ -25,7 +25,7 @@ def apply_theme(window, theme_name):
 
     font = QFont()
     font.setFamily("Consolas")
-    font.setPointSize(12)
+    font.setPointSize(16)
     font.setStyleHint(QFont.StyleHint.Monospace)
     
     window.setFont(font)

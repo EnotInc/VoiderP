@@ -1,12 +1,14 @@
 class FileManager():
     def __init__(self, text_buffer):
         self.buffer = text_buffer
-        # тут будет подгрузка корневого файла
 
     def load_file(self, path):
         try:
             with open(path, "r", encoding="utf-8") as f:
                 self.buffer.text = f.read()
+                if self.buffer.changed:
+                    print("file was changed but not saves")
+
         except Exception as e:
             print(e)
 
@@ -17,10 +19,7 @@ class FileManager():
                 f.write(self.buffer.text)
         except Exception as e:
             print(e)
-
-    def create_new_file():
-        pass
-
+    
     def create_new_dirrectory():
         pass
 
