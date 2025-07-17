@@ -19,7 +19,7 @@ THEMES = {
 
 def apply_theme(window, theme_name):
     if theme_name not in THEMES:
-        theme_name = "light"
+        theme_name = "dark"
     
     theme = THEMES[theme_name]
 
