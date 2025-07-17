@@ -20,7 +20,8 @@ class MainWindow(QMainWindow):
         self.editor = TextEditor(self.buffer)
         self.tree_view = TreeView(self.file_manager)
 
-        self.tree_view.doubleClicked.connect(self._file_clicked)
+        #self.tree_view.doubleClicked.connect(self._file_clicked)
+        self.tree_view.clicked.connect(self._file_clicked)
 
         splitter = QSplitter()
         splitter.addWidget(self.tree_view)
