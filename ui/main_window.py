@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog
 
-from sources.styles import apply_theme
+from sources.styles.styler import apply_theme
 
 from core.file_manager import FileManager
 from core.text_buffer import TextBuffer
@@ -39,9 +39,9 @@ class MainWindow(QMainWindow):
         self.menu_bar.save_trigger.connect(self._on_save)
         self.menu_bar.save_as_trigger.connect(self._on_save_as)
         self.menu_bar.purge_trigger.connect(self._on_purge_editor)
- 
-        #apply_theme(self, "dark")
 
+        self._apply_theme("dark")
+ 
     def _center_of_monitor(self):
 
         screen_geometry = self.screen().availableGeometry()
@@ -53,7 +53,8 @@ class MainWindow(QMainWindow):
         self.move(window_geometry.topLeft)
 
     def _apply_theme(self, theme_name):
-        apply_theme(self, theme_name)
+        _style = apply_theme(theme_name)
+        self.setStyleSheet(_style)
 
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
