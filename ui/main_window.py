@@ -37,8 +37,10 @@ class MainWindow(QMainWindow):
         self.menu_bar.theme_trigger.connect(self._apply_theme)
         self.menu_bar.open_trigger.connect(self._on_load)
         self.menu_bar.save_trigger.connect(self._on_save)
+        self.menu_bar.save_as_trigger.connect(self._on_save_as)
+        self.menu_bar.purge_trigger.connect(self._on_purge_editor)
  
-        apply_theme(self, "dark")
+        #apply_theme(self, "dark")
 
     def _center_of_monitor(self):
 
@@ -64,8 +66,18 @@ class MainWindow(QMainWindow):
             self.editor._sync_with_buffer()
         
     def _on_save(self):
+        if self.file_manager.current_file != "":
+             self.file_manager.save_file()
+        else:
+            self._on_save_as()
+        self.editor._sync_with_buffer()
+
+    def _on_save_as(self):
         path, _ = QFileDialog.getSaveFileName(self, "Save file")
         if path:
-            if self.file_manager.save_file(path):
+            if self.file_manager.save_as_file(path):
                 self.editor._sync_with_buffer()
 
+    def _on_purge_editor(self):
+        self.file_manager.purge_editor()
+        self.editor._sync_with_buffer()
