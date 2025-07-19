@@ -1,46 +1,50 @@
 QMainWindow{
-    background-color: #2E2E2D;
+    background-color: @main_bg;
 }
 
 QPlainTextEdit{
-    background-color: #545353;
-    color: #CBCDD0;
+    background-color: @main_fg;
+    color: @text_color;
     font-size: 16px;
     font-family: "consolas", monospace;
 }
 
 QTreeView{
-    background-color: #545353;
-    color: #CBCDD0;
+    background-color: @main_fg;
+    color: @text_color;
     font-size: 16px;
     font-family: "consolas", monospace;
 }
 
 QMenuBar{
-    background-color: #2E2E2D;
-    color: #545353;
+    background-color: @main_bg;
+    color: @main_fg;
     font-size: 16px;
     font-family: "consolas", monospace;
 }
 
 QMenuBar::item{
-    background-color: #545353;
-    color: #CBCDD0;
+    background-color: @main_fg;
+    color: @text_color;
     font-size: 16px;
     font-family: "consolas", monospace;
 }
 
 QMenu{
-    background-color: #545353;
-    color: #CBCDD0;
+    background-color: @main_fg;
+    color: @text_color;
     font-size: 16px;
     font-family: "consolas", monospace;
     border-style: groove;
     border: 1px, solid, transparet;
-    border-color: #2E2E2D;
+    border-color: @main_bg;
     border-radius: 4px;
 }
 
 QMenu:selected{
-    background-color: #7C7876;
+    background-color: @hover;
+}
+
+QSplitter::handle{
+    background-color: @main_bg
 }
