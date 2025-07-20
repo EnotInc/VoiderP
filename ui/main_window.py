@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog
+from PyQt6.QtCore import Qt
 
-from sources.themes.styler import apply_theme
-from sources.settings import ConfigManager
+from sources.themes.styler import Styler
 
 from core.file_manager import FileManager
 from core.text_buffer import TextBuffer
@@ -12,16 +12,16 @@ from ui.menu_bar import CustomMenu
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__()
+        self.config = config
 
-        self.config = ConfigManager()
-
+        self.styler = Styler(config)
         self.buffer = TextBuffer()
-        self.file_manager = FileManager(self.buffer) 
+        self.file_manager = FileManager(config, self.buffer) 
         
-        self.editor = TextEditor(self.buffer)
-        self.tree_view = TreeView(self.file_manager)
+        self.editor = TextEditor(self.config, self.buffer)
+        self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
         self.setMenuBar(self.menu_bar)
 
@@ -46,7 +46,6 @@ class MainWindow(QMainWindow):
         self.setup_work_space()
  
     def _center_of_monitor(self):
-
         screen_geometry = self.screen().availableGeometry()
         window_geometry = self.frameGeometry()
 
@@ -56,9 +55,9 @@ class MainWindow(QMainWindow):
         self.move(window_geometry.topLeft)
 
     def _apply_theme(self, theme_name):
-        _style = apply_theme(theme_name)
-        self.setStyleSheet(_style)
         self.config.config["editor"]["Theme"] = theme_name
+        _style = self.styler.apply_theme(theme_name)
+        self.setStyleSheet(_style)
 
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
@@ -73,7 +72,7 @@ class MainWindow(QMainWindow):
             self.config.config["files"]["LastFile"] = self.file_manager.current_file
         
     def _on_save(self):
-        if self.file_manager.current_file != "":
+        if self.file_manager.current_file != "" and self.buffer.changed:
              self.file_manager.save_file()
         else:
             self._on_save_as()
@@ -94,8 +93,11 @@ class MainWindow(QMainWindow):
         self.file_manager.load_file(self.config.config["files"]["LastFile"])
         self.editor._sync_with_buffer()
         self._apply_theme(self.config.config["editor"]["Theme"])
+        self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2)
+        #font = self.editor.font().pointSize()
+        #self.editor.setTabStopDistance(font*4)
 
     def closeEvent(self, event):
-        self.file_manager.save_file()
+        self._on_save()
         self.config.save_config()
         event.accept()

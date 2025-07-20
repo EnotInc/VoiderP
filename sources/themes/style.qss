@@ -5,36 +5,36 @@ QMainWindow{
 QPlainTextEdit{
     background-color: @main_fg;
     color: @text_color;
-    font-size: 16px;
-    font-family: "consolas", monospace;
+    font-size: @font_size;
+    font-family : @font_family;
 }
 
 QTreeView{
     background-color: @main_fg;
     color: @text_color;
-    font-size: 16px;
-    font-family: "consolas", monospace;
+    font-size: @font_size;
+    font-family : @font_family;
 }
 
 QMenuBar{
     background-color: @main_bg;
     color: @main_fg;
-    font-size: 16px;
-    font-family: "consolas", monospace;
+    font-size: @font_size;
+    font-family : @font_family;
 }
 
 QMenuBar::item{
     background-color: @main_fg;
     color: @text_color;
-    font-size: 16px;
-    font-family: "consolas", monospace;
+    font-size: @font_size;
+    font-family : @font_family;
 }
 
 QMenu{
     background-color: @main_fg;
     color: @text_color;
-    font-size: 16px;
-    font-family: "consolas", monospace;
+    font-size: @font_size;
+    font-family : @font_family;
     border-style: groove;
     border: 1px, solid, transparet;
     border-color: @main_bg;

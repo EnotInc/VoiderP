@@ -15,7 +15,7 @@ class ConfigManager:
             "editor": {
                 "Theme" : "light",
                 "Font" :{
-                    "Family" : "consolas, monospace",
+                    "Family" : "'Consolas', monospace",
                     "Size" : 16
                 },
                 "RowNumbers" : False,

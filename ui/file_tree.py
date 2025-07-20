@@ -32,7 +32,7 @@ class CustomFileModel(QFileSystemModel):
         return super().data(index, role)
 
 class TreeView(QTreeView):
-    def __init__(self, file_manager):
+    def __init__(self, config, file_manager):
         super().__init__()
 
         self.file_manager = file_manager

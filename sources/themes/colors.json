@@ -3,24 +3,18 @@
         "@main_bg" : "#222831",
         "@main_fg" : "#393E46",
         "@text_color" : "#DFD0B8",
-        "@hover" : "#948979" 
+        "@hover" : "#948979"
     },
     "light": {
-        "@main_bg" : "#AB886D",
-        "@main_fg" : "#D6C0B3",
-        "@text_color" : "#493628",
-        "@hover" : "#E4E0E1" 
+        "@main_bg" : "#BBAB8C",
+        "@main_fg" : "#DED0B6",
+        "@text_color" : "#3B3030",
+        "@hover" : "#FAEED1"
     },
     "console": {
         "@main_bg" : "black",
         "@main_fg" : "black",
         "@text_color" : "white",
-        "@hover" : "gray" 
-    },
-    "light_odl": {
-        "@main_bg" : "#a79277",
-        "@main_fg" : "#d1bb9e",
-        "@text_color" : "#000000",
-        "@hover" : "#fff2e1" 
+        "@hover" : "gray"
     }
 }

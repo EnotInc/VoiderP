@@ -1,20 +1,22 @@
+import os
+
 class FileManager():
-    def __init__(self, text_buffer):
+    def __init__(self, config, text_buffer):
         self.buffer = text_buffer
         self.current_file = ""
         self.root_path = ""
 
     def load_file(self, path):
         try:
-            if path != "" :
-                if self.buffer.changed and self.current_file != "":
+            if path != "" and os.path.exists(path):
+                if  self.buffer.changed and self.current_file != "":
                     self.save_file()
                 with open(path, "r", encoding="utf-8") as f:
                     self.current_file = path 
                     self.buffer.text = f.read()
 
         except Exception as e:
-            print(e, path != "")
+            print(e)
 
     def save_file(self):
         try:
@@ -34,6 +36,7 @@ class FileManager():
             print(e)
     
     def purge_editor(self):
+        self.buffer.changed = False
         self.save_file()
         self.buffer.text = ""
         self.current_file = ""
