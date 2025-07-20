@@ -93,9 +93,7 @@ class MainWindow(QMainWindow):
         self.file_manager.load_file(self.config.config["files"]["LastFile"])
         self.editor._sync_with_buffer()
         self._apply_theme(self.config.config["editor"]["Theme"])
-        self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2)
-        #font = self.editor.font().pointSize()
-        #self.editor.setTabStopDistance(font*4)
+        self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2 + 1)
 
     def closeEvent(self, event):
         self._on_save()
