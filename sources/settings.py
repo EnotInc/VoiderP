@@ -9,18 +9,21 @@ class ConfigManager:
         self.default_config ={
             "files":{
                 "LastFile" : "",
-                "Rootpath" : "",
+                "RootPath" : "",
                 "AutoSave" : ""
             },
             "editor": {
                 "Theme" : "light",
+                "Maximized" : 1,
+                "WindowH" : 1000,
+                "WindowV" : 600,
                 "Font" :{
                     "Family" : "'Consolas', monospace",
                     "Size" : 16
                 },
-                "RowNumbers" : False,
-                "RelativeNumbers" : False,
-                "SintaxHightlight": False,
+                "RowNumbers" : 0,
+                "RelativeNumbers" : 0,
+                "SintaxHightlight": 0,
                 "CursorStyle" : 1,
             },
             "keybindings":{

@@ -9,6 +9,7 @@ from core.text_buffer import TextBuffer
 from ui.editor import TextEditor
 from ui.file_tree import TreeView
 from ui.menu_bar import CustomMenu
+from ui.terminal import Terminal
 
 
 class MainWindow(QMainWindow):
@@ -23,22 +24,34 @@ class MainWindow(QMainWindow):
         self.editor = TextEditor(self.config, self.buffer)
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
+        self.terminal = Terminal()
         self.setMenuBar(self.menu_bar)
 
         self.tree_view.doubleClicked.connect(self._file_clicked)
 
-        splitter = QSplitter()
-        splitter.addWidget(self.tree_view)
-        splitter.addWidget(self.editor)
+        main_splitter = QSplitter()
+        editor_splitter = QSplitter(Qt.Orientation.Vertical)
 
-        splitter.setSizes([512, 1000])
+        editor_splitter.addWidget(self.editor)
+        editor_splitter.addWidget(self.terminal)
+        editor_splitter.setSizes([800, 180])
 
-        self.setCentralWidget(splitter)
-        self.resize(1000, 600)
+        main_splitter.addWidget(self.tree_view)
+        main_splitter.addWidget(editor_splitter)
+        main_splitter.setSizes([384, 1000])
+
+        self.setCentralWidget(main_splitter)
+        self.WindowH = self.config.config["editor"]["WindowH"]
+        self.WindowV = self.config.config["editor"]["WindowV"]
+        if self.config.config["editor"]["Maximized"]:
+            self.showMaximized()
+        else:
+            self.resize(self.WindowH, self.WindowV)
         self.setMinimumSize(400, 300) 
 
         self.menu_bar.theme_trigger.connect(self._apply_theme)
         self.menu_bar.open_trigger.connect(self._on_load)
+        self.menu_bar.open_folder.connect(self._on_open_folder)
         self.menu_bar.save_trigger.connect(self._on_save)
         self.menu_bar.save_as_trigger.connect(self._on_save_as)
         self.menu_bar.purge_trigger.connect(self._on_purge_editor)
@@ -53,6 +66,15 @@ class MainWindow(QMainWindow):
         window_geometry.moveCenter(center_point)
 
         self.move(window_geometry.topLeft)
+
+    def resizeEvent(self, event):
+        if self.isMaximized():
+            self.resize(self.WindowH, self.WindowV)
+        self.config.config["editor"]["Maximized"] = 1 - int(self.isMaximized())
+    
+    def moveEvent(self, event):
+        self.config.config["editor"]["WindowH"] = self.size().width()
+        self.config.config["editor"]["WindowV"] = self.size().height()
 
     def _apply_theme(self, theme_name):
         self.config.config["editor"]["Theme"] = theme_name
@@ -70,6 +92,11 @@ class MainWindow(QMainWindow):
             self.file_manager.load_file(path)
             self.editor._sync_with_buffer()
             self.config.config["files"]["LastFile"] = self.file_manager.current_file
+    
+    def _on_open_folder(self):
+        path = QFileDialog.getExistingDirectory(self, "Open Folder")
+        if path:
+            self.tree_view.open_folder(path) 
         
     def _on_save(self):
         if self.file_manager.current_file != "" and self.buffer.changed:
@@ -91,6 +118,7 @@ class MainWindow(QMainWindow):
 
     def setup_work_space(self):
         self.file_manager.load_file(self.config.config["files"]["LastFile"])
+        self.tree_view.open_folder(self.config.config["files"]["RootPath"])
         self.editor._sync_with_buffer()
         self._apply_theme(self.config.config["editor"]["Theme"])
         self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2 + 1)

@@ -36,6 +36,7 @@ class TreeView(QTreeView):
         super().__init__()
 
         self.file_manager = file_manager
+        self.config = config
 
         self.treemodel = CustomFileModel(self)
         self.treemodel.setRootPath(QDir.currentPath())
@@ -52,3 +53,9 @@ class TreeView(QTreeView):
         path = self.model().filePath(index)
         if path and not self.model().isDir(index):
             self.file_manager.load_file(path)
+
+    def open_folder(self, path):
+        self.treemodel.setRootPath(path)
+        root_index = self.treemodel.index(path)
+        self.file_manager.open_folder(path)
+        self.setRootIndex(root_index)

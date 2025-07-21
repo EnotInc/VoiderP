@@ -3,6 +3,7 @@ from PyQt6.QtCore import pyqtSignal
 
 class CustomMenu(QMenuBar):
     open_trigger = pyqtSignal()
+    open_folder = pyqtSignal()
     save_trigger = pyqtSignal()
     save_as_trigger = pyqtSignal()
     theme_trigger = pyqtSignal(str)
@@ -16,7 +17,7 @@ class CustomMenu(QMenuBar):
         file_menu = self.addMenu("File")
 
         file_menu.addAction("Open File", self.open_trigger.emit)
-        file_menu.addAction("<Open Folder>")
+        file_menu.addAction("Open Folder", self.open_folder.emit)
         file_menu.addSeparator()
         file_menu.addAction("Save", self.save_trigger.emit)
         file_menu.addAction("Save As", self.save_as_trigger.emit)

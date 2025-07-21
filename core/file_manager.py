@@ -2,6 +2,7 @@ import os
 
 class FileManager():
     def __init__(self, config, text_buffer):
+        self.config = config
         self.buffer = text_buffer
         self.current_file = ""
         self.root_path = ""
@@ -41,6 +42,10 @@ class FileManager():
         self.buffer.text = ""
         self.current_file = ""
         pass
+    
+    def open_folder(self, path):
+        self.root_path = path
+        self.config.config['files']["RootPath"] = path
     
     def create_new_dirrectory():
         pass
