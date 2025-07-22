@@ -41,12 +41,6 @@ class MainWindow(QMainWindow):
         main_splitter.setSizes([384, 1000])
 
         self.setCentralWidget(main_splitter)
-        self.WindowH = self.config.config["editor"]["WindowH"]
-        self.WindowV = self.config.config["editor"]["WindowV"]
-        if self.config.config["editor"]["Maximized"]:
-            self.showMaximized()
-        else:
-            self.resize(self.WindowH, self.WindowV)
         self.setMinimumSize(400, 300) 
 
         self.menu_bar.theme_trigger.connect(self._apply_theme)
@@ -66,32 +60,20 @@ class MainWindow(QMainWindow):
         window_geometry.moveCenter(center_point)
 
         self.move(window_geometry.topLeft)
-
-    def resizeEvent(self, event):
-        if self.isMaximized():
-            self.resize(self.WindowH, self.WindowV)
-        self.config.config["editor"]["Maximized"] = 1 - int(self.isMaximized())
-    
-    def moveEvent(self, event):
-        self.config.config["editor"]["WindowH"] = self.size().width()
-        self.config.config["editor"]["WindowV"] = self.size().height()
-
+ 
     def _apply_theme(self, theme_name):
-        self.config.config["editor"]["Theme"] = theme_name
         _style = self.styler.apply_theme(theme_name)
         self.setStyleSheet(_style)
 
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
         self.editor._sync_with_buffer()
-        self.config.config["files"]["LastFile"] = self.file_manager.current_file
 
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
         if path:
             self.file_manager.load_file(path)
             self.editor._sync_with_buffer()
-            self.config.config["files"]["LastFile"] = self.file_manager.current_file
     
     def _on_open_folder(self):
         path = QFileDialog.getExistingDirectory(self, "Open Folder")
@@ -114,16 +96,34 @@ class MainWindow(QMainWindow):
     def _on_purge_editor(self):
         self.file_manager.purge_editor()
         self.editor._sync_with_buffer()
-        self.config.config["files"]["LastFile"] = ""
 
     def setup_work_space(self):
         self.file_manager.load_file(self.config.config["files"]["LastFile"])
         self.tree_view.open_folder(self.config.config["files"]["RootPath"])
+
+        self.WindowH = self.config.config["editor"]["WindowH"]
+        self.WindowV = self.config.config["editor"]["WindowV"]
+        if self.config.config["editor"]["Maximized"]:
+            self.showMaximized()
+        else:
+            self.resize(self.WindowH, self.WindowV)
+
         self.editor._sync_with_buffer()
         self._apply_theme(self.config.config["editor"]["Theme"])
         self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2 + 1)
 
     def closeEvent(self, event):
+        self.config.config["editor"]["Maximized"] = int(self.isMaximized())
+        self.config.config["editor"]["WindowH"] = self.size().width()
+        self.config.config["editor"]["WindowV"] = self.size().height()
+
+        self.config.config["editor"]["Theme"] = self.styler.theme
+        self.config.config["editor"]["Font"]["Family"] = self.styler.font_family
+        self.config.config["editor"]["Font"]["Size"] = self.styler.font_size
+
+        self.config.config["files"]["RootPath"] = self.file_manager.root_path
+        self.config.config["files"]["LastFile"] = self.file_manager.current_file
+
         self._on_save()
         self.config.save_config()
         event.accept()

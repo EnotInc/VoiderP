@@ -45,7 +45,6 @@ class FileManager():
     
     def open_folder(self, path):
         self.root_path = path
-        self.config.config['files']["RootPath"] = path
     
     def create_new_dirrectory():
         pass

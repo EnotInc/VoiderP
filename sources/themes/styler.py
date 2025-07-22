@@ -18,6 +18,7 @@ class Styler:
             for var, value in themes.items():
                 _style = _style.replace(var, value)
 
+            self.theme = theme_name
             _style = _style.replace("@font_size", f"{self.font_size}px")
             _style = _style.replace("@font_family", self.font_family)
 
