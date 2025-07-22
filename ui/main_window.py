@@ -81,10 +81,11 @@ class MainWindow(QMainWindow):
             self.tree_view.open_folder(path) 
         
     def _on_save(self):
-        if self.file_manager.current_file != "" and self.buffer.changed:
-             self.file_manager.save_file()
-        else:
+        print(self.buffer.changed, self.file_manager.current_file == "")
+        if self.file_manager.current_file == "":
             self._on_save_as()
+        else:
+            self.file_manager.save_file()
         self.editor._sync_with_buffer()
 
     def _on_save_as(self):
@@ -96,26 +97,28 @@ class MainWindow(QMainWindow):
     def _on_purge_editor(self):
         self.file_manager.purge_editor()
         self.editor._sync_with_buffer()
+        self.buffer.changed = False
 
     def setup_work_space(self):
         self.file_manager.load_file(self.config.config["files"]["LastFile"])
         self.tree_view.open_folder(self.config.config["files"]["RootPath"])
 
+        self.WindowW = self.config.config["editor"]["WindowW"]
         self.WindowH = self.config.config["editor"]["WindowH"]
-        self.WindowV = self.config.config["editor"]["WindowV"]
         if self.config.config["editor"]["Maximized"]:
             self.showMaximized()
         else:
-            self.resize(self.WindowH, self.WindowV)
+            self.resize(self.WindowW, self.WindowH)
 
         self.editor._sync_with_buffer()
+        self.buffer.changed = False
         self._apply_theme(self.config.config["editor"]["Theme"])
         self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2 + 1)
 
     def closeEvent(self, event):
         self.config.config["editor"]["Maximized"] = int(self.isMaximized())
-        self.config.config["editor"]["WindowH"] = self.size().width()
-        self.config.config["editor"]["WindowV"] = self.size().height()
+        self.config.config["editor"]["WindowW"] = self.size().width()
+        self.config.config["editor"]["WindowH"] = self.size().height()
 
         self.config.config["editor"]["Theme"] = self.styler.theme
         self.config.config["editor"]["Font"]["Family"] = self.styler.font_family
@@ -124,6 +127,8 @@ class MainWindow(QMainWindow):
         self.config.config["files"]["RootPath"] = self.file_manager.root_path
         self.config.config["files"]["LastFile"] = self.file_manager.current_file
 
-        self._on_save()
+        if self.buffer.changed:
+            self._on_save()
+
         self.config.save_config()
         event.accept()

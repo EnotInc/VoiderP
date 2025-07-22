@@ -15,8 +15,8 @@ class ConfigManager:
             "editor": {
                 "Theme" : "light",
                 "Maximized" : 1,
-                "WindowH" : 1000,
-                "WindowV" : 600,
+                "WindowW" : 1000,
+                "WindowH" : 600,
                 "Font" :{
                     "Family" : "'Consolas', monospace",
                     "Size" : 16

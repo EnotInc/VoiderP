@@ -5,7 +5,6 @@ class TextBuffer:
         
     @property
     def text(self):
-        self._changed = False
         return self._text
     
     @text.setter

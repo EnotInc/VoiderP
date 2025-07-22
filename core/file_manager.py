@@ -25,6 +25,7 @@ class FileManager():
                 _path = self.current_file
                 with open(_path, "w", encoding="utf-8") as f:
                     f.write(self.buffer.text)
+                self.buffer.changed = False
         except Exception as e:
             print(e, _path)
 
@@ -33,15 +34,14 @@ class FileManager():
             _path = path
             with open(_path, "w", encoding="utf-8") as f:
                 f.write(self.buffer.text)
+            self.buffer.changed = False
         except Exception as e:
             print(e)
     
     def purge_editor(self):
-        self.buffer.changed = False
         self.save_file()
         self.buffer.text = ""
         self.current_file = ""
-        pass
     
     def open_folder(self, path):
         self.root_path = path
