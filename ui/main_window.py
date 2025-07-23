@@ -81,7 +81,6 @@ class MainWindow(QMainWindow):
             self.tree_view.open_folder(path) 
         
     def _on_save(self):
-        print(self.buffer.changed, self.file_manager.current_file == "")
         if self.file_manager.current_file == "":
             self._on_save_as()
         else:
@@ -100,33 +99,21 @@ class MainWindow(QMainWindow):
         self.buffer.changed = False
 
     def setup_work_space(self):
-        self.file_manager.load_file(self.config.config["files"]["LastFile"])
-        self.tree_view.open_folder(self.config.config["files"]["RootPath"])
+        self.file_manager.load_file(self.config.last_file)
+        self.tree_view.open_folder(self.config.root_path)
 
-        self.WindowW = self.config.config["editor"]["WindowW"]
-        self.WindowH = self.config.config["editor"]["WindowH"]
-        if self.config.config["editor"]["Maximized"]:
+        self.WindowW = self.config.window_w
+        self.WindowH = self.config.window_h
+        if self.config.maximized:
             self.showMaximized()
         else:
             self.resize(self.WindowW, self.WindowH)
 
         self.editor._sync_with_buffer()
         self.buffer.changed = False
-        self._apply_theme(self.config.config["editor"]["Theme"])
-        self.editor.setCursorWidth(self.config.config["editor"]["Font"]["Size"]//2 + 1)
+        self._apply_theme(self.config.theme)
 
     def closeEvent(self, event):
-        self.config.config["editor"]["Maximized"] = int(self.isMaximized())
-        self.config.config["editor"]["WindowW"] = self.size().width()
-        self.config.config["editor"]["WindowH"] = self.size().height()
-
-        self.config.config["editor"]["Theme"] = self.styler.theme
-        self.config.config["editor"]["Font"]["Family"] = self.styler.font_family
-        self.config.config["editor"]["Font"]["Size"] = self.styler.font_size
-
-        self.config.config["files"]["RootPath"] = self.file_manager.root_path
-        self.config.config["files"]["LastFile"] = self.file_manager.current_file
-
         if self.buffer.changed:
             self._on_save()
 

@@ -24,7 +24,7 @@ class ConfigManager:
                 "RowNumbers" : 0,
                 "RelativeNumbers" : 0,
                 "SintaxHightlight": 0,
-                "CursorStyle" : 1,
+                "CursorStyle" : 2,
             },
             "keybindings":{
                 "Save" : "Ctrl+S",
@@ -33,6 +33,22 @@ class ConfigManager:
             }
         }
         self.config = self.load_config()
+
+        self.root_path = self.config["files"]["RootPath"]
+        self.last_file = self.config["files"]["LastFile"]
+        self.auto_save = self.config["files"]["AutoSave"]
+
+        self.theme = self.config["editor"]["Theme"]
+
+        self.maximized = self.config["editor"]["Maximized"]
+        self.window_w = self.config["editor"]["WindowW"]
+        self.window_h = self.config["editor"]["WindowH"]
+
+        self.font_size = self.config["editor"]["Font"]["Size"]
+        self.font_family = self.config["editor"]["Font"]["Family"]
+
+        self.row_numbers = self.config["editor"]["RowNumbers"]
+        self.cursor_style = self.config["editor"]["CursorStyle"]
 
     def load_config(self):
         try:
@@ -44,5 +60,21 @@ class ConfigManager:
             return self.default_config.copy()
 
     def save_config(self):
+        self.config["files"]["RootPath"] = self.root_path 
+        self.config["files"]["LastFile"] = self.last_file
+        self.config["files"]["AutoSave"] = self.auto_save
+
+        self.config["editor"]["Theme"] = self.theme
+
+        self.config["editor"]["Maximized"] = self.maximized
+        self.config["editor"]["WindowW"] = self.window_w
+        self.config["editor"]["WindowH"] = self.window_h
+
+        self.config["editor"]["Font"]["Size"] = self.font_size
+        self.config["editor"]["Font"]["Family"] = self.font_family
+
+        self.config["editor"]["RowNumbers"] = self.row_numbers
+        self.config["editor"]["CursorStyle"] = self.cursor_style
+
         with open(self.config_path, 'w') as f:
             json.dump(self.config, f, indent=2)
