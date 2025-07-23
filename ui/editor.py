@@ -2,7 +2,7 @@ import json
 
 from PyQt6.Qsci import QsciScintilla, QsciLexer
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QFont
 
 class TextEditor(QsciScintilla):
 
@@ -18,11 +18,11 @@ class TextEditor(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_SETCARETFORE, QColor("#FFFFFF"))
         self.setCaretLineBackgroundColor(QColor("#3A3A3A"))
 
+        self.setWrapMode(QsciScintilla.WrapMode.WrapWord)
+
         self.setCaretWidth(3)
 
         self.setMarginType(0, QsciScintilla.MarginType.NumberMargin)
-        self.setMarginsBackgroundColor(QColor("#000000"))
-        self.setMarginsForegroundColor(QColor("#FFFFFF"))
         digits = 4
         self.setMarginWidth(0, " " * (digits+1) +"9"*digits )
 
@@ -40,10 +40,15 @@ class TextEditor(QsciScintilla):
         _paper = _theme[theme_name]["@main_fg"]
         _color = _theme[theme_name]["@text_color"]
 
+        _font = QFont()
+        _font.setFamily(self.config.font_family)
+        _font.setPointSize(self.config.font_size)
+
         self.setPaper(QColor(_paper))
         self.setColor(QColor(_color))
         self.setMarginsBackgroundColor(QColor(_paper))
         self.setMarginsForegroundColor(QColor(_color))
+        self.setFont(_font)
 
     def _sync_with_buffer(self):
         self.setText(self.buffer.text)

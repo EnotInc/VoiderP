@@ -14,6 +14,7 @@ class FileManager():
                     self.save_file()
                 with open(path, "r", encoding="utf-8") as f:
                     self.current_file = path 
+                    self.config.last_file = path
                     self.buffer.text = f.read()
 
         except Exception as e:
@@ -42,9 +43,11 @@ class FileManager():
         self.save_file()
         self.buffer.text = ""
         self.current_file = ""
+        self.config.last_file = ""
     
     def open_folder(self, path):
         self.root_path = path
+        self.config.root_path = path
     
     def create_new_dirrectory():
         pass

@@ -19,6 +19,7 @@ class Styler:
             _style = _style.replace("@font_size", f"{self.config.font_size}px")
             _style = _style.replace("@font_family", self.config.font_family)
 
+            self.config.theme = theme_name
             return _style
         except Exception as ex:
             print(ex)
