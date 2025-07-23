@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
  
     def _apply_theme(self, theme_name):
         _style = self.styler.apply_theme(theme_name)
+        self.editor.apply_theme(theme_name)
         self.setStyleSheet(_style)
 
     def _file_clicked(self, index):

@@ -1,3 +1,5 @@
+import json
+
 from PyQt6.Qsci import QsciScintilla, QsciLexer
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
@@ -31,8 +33,17 @@ class TextEditor(QsciScintilla):
 
         self.textChanged.connect(self._on_text_changed) 
 
-    def apply_theme(theme_name):
-        pass
+    def apply_theme(self, theme_name):
+        with open("sources/themes/colors.json", "r") as t:
+            _theme = json.load(t)
+
+        _paper = _theme[theme_name]["@main_fg"]
+        _color = _theme[theme_name]["@text_color"]
+
+        self.setPaper(QColor(_paper))
+        self.setColor(QColor(_color))
+        self.setMarginsBackgroundColor(QColor(_paper))
+        self.setMarginsForegroundColor(QColor(_color))
 
     def _sync_with_buffer(self):
         self.setText(self.buffer.text)
