@@ -27,6 +27,7 @@ class FileManager():
                 with open(_path, "w", encoding="utf-8") as f:
                     f.write(self.buffer.text)
                 self.buffer.changed = False
+                
         except Exception as e:
             print(e, _path)
 
@@ -36,6 +37,7 @@ class FileManager():
             with open(_path, "w", encoding="utf-8") as f:
                 f.write(self.buffer.text)
             self.buffer.changed = False
+
         except Exception as e:
             print(e)
     
@@ -48,7 +50,7 @@ class FileManager():
     def open_folder(self, path):
         self.root_path = path
         self.config.root_path = path
-    
+
     def create_new_dirrectory():
         pass
 

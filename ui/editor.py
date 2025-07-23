@@ -1,6 +1,7 @@
 import json
 
-from PyQt6.Qsci import QsciScintilla, QsciLexer
+from PyQt6.Qsci import (QsciScintilla,
+                        QsciLexerPython, QsciLexerCPP, QsciLexerJavaScript, QsciLexerMarkdown)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QFont
 
@@ -44,11 +45,33 @@ class TextEditor(QsciScintilla):
         _font.setFamily(self.config.font_family)
         _font.setPointSize(self.config.font_size)
 
+        self.setup_lexer(_paper)
+
         self.setPaper(QColor(_paper))
         self.setColor(QColor(_color))
         self.setMarginsBackgroundColor(QColor(_paper))
         self.setMarginsForegroundColor(QColor(_color))
         self.setFont(_font)
+
+    
+    def setup_lexer(self, _paper):
+        lexer = None
+
+        parts = self.config.last_file.split('.')
+        ext = parts[len(parts)-1]
+
+        if ext in ("py", "pyw"):
+            lexer = QsciLexerPython()
+        elif ext in ("cpp", "cc", "cxx", "h", "hxx"):
+            lexer = QsciLexerCPP()
+        elif ext in ("js", "ts"):
+            lexer = QsciLexerJavaScript()
+        elif ext in ("md"):
+            lexer = QsciLexerMarkdown()
+        
+        if lexer:
+            lexer.setPaper(QColor(_paper))
+            self.setLexer(lexer)
 
     def _sync_with_buffer(self):
         self.setText(self.buffer.text)
