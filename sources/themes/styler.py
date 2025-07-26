@@ -1,10 +1,11 @@
 import json
+from PyQt6.QtGui import QColor, QFont
 
 class Styler:
     def __init__(self, config):
         self.config = config
 
-    def apply_theme(self, theme_name):
+    def apply_theme(self, main_window, theme_name):
         try:
             theme_file = "sources/themes/style.qss"
             with open(theme_file, "r") as s:
@@ -19,9 +20,22 @@ class Styler:
             _style = _style.replace("@font_size", f"{self.config.font_size}px")
             _style = _style.replace("@font_family", self.config.font_family)
 
-            self.config.theme = theme_name
+            _paper = themes["@main_fg"]
+            _color = themes["@text_color"]
 
-            return _style
+
+            _font = QFont()
+            _font.setFamily(self.config.font_family)
+            _font.setPointSize(self.config.font_size)
+
+            main_window.editor.setup_lexer(_paper)
+
+            main_window.editor.setPaper(QColor(_paper))
+            main_window.editor.setColor(QColor(_color))
+            main_window.editor.setMarginsBackgroundColor(QColor(_paper))
+            main_window.editor.setMarginsForegroundColor(QColor(_color))
+            main_window.editor.setFont(_font)
+
+            main_window.setStyleSheet(_style)
         except Exception as ex:
-            print(ex)
-            return None
+            print(f"ERROR ad styler.py{ex}")

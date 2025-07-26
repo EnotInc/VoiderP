@@ -34,26 +34,7 @@ class TextEditor(QsciScintilla):
 
         self.textChanged.connect(self._on_text_changed) 
 
-    def apply_theme(self, theme_name):
-        with open("sources/themes/colors.json", "r") as t:
-            _theme = json.load(t)
-
-        _paper = _theme[theme_name]["@main_fg"]
-        _color = _theme[theme_name]["@text_color"]
-
-        _font = QFont()
-        _font.setFamily(self.config.font_family)
-        _font.setPointSize(self.config.font_size)
-
-        self.setup_lexer(_paper)
-
-        self.setPaper(QColor(_paper))
-        self.setColor(QColor(_color))
-        self.setMarginsBackgroundColor(QColor(_paper))
-        self.setMarginsForegroundColor(QColor(_color))
-        self.setFont(_font)
-
-    
+    #TODO move this to the new lexer.py file    
     def setup_lexer(self, _paper):
         lexer = None
 

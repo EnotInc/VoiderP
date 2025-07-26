@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 
 from sources.settings import ConfigManager
-from ui.main_window import MainWindow
+from ui.main_window.main_window import MainWindow
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     window.setWindowTitle("Voider")
     window.setWindowIcon(QIcon("sources/voider_icon.ico"))
     window.show()
-      
+	
     sys.exit(app.exec())
 
 if __name__ == "__main__":

@@ -6,10 +6,10 @@ from sources.themes.styler import Styler
 from core.file_manager import FileManager
 from core.text_buffer import TextBuffer
 
-from ui.editor import TextEditor
-from ui.file_tree import TreeView
-from ui.menu_bar import CustomMenu
-from ui.terminal import Terminal
+from ui.editor.editor import TextEditor
+from ui.main_window.file_tree import TreeView
+from ui.main_window.menu_bar import CustomMenu
+from ui.editor.terminal import Terminal
 
 
 class MainWindow(QMainWindow):
@@ -62,9 +62,7 @@ class MainWindow(QMainWindow):
         self.move(window_geometry.topLeft)
  
     def _apply_theme(self, theme_name):
-        _style = self.styler.apply_theme(theme_name)
-        self.editor.apply_theme(theme_name)
-        self.setStyleSheet(_style)
+        self.styler.apply_theme(self, theme_name)
 
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
