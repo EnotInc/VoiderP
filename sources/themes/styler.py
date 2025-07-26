@@ -23,8 +23,7 @@ class Styler:
             _paper = themes["@main_fg"]
             _color = themes["@text_color"]
 
-            _font = QFont()
-            _font.setFamily(self.config.font_family)
+            _font = QFont(self.config.font_family)
             _font.setPointSize(self.config.font_size)
 
             main_window.editor._lexer.setup_lexer()
@@ -34,8 +33,11 @@ class Styler:
             main_window.editor.setColor(QColor(_color))
             main_window.editor.setMarginsBackgroundColor(QColor(_paper))
             main_window.editor.setMarginsForegroundColor(QColor(_color))
+            main_window.editor._lexer.current_lexer.setFont(_font)
+
+            main_window.editor._lexer.setFont(_font)
             main_window.editor.setFont(_font)
 
             main_window.setStyleSheet(_style)
         except Exception as ex:
-            print(f"ERROR ad styler.py{ex}")
+            print(f"ERROR ad styler.py:\n{ex}")
