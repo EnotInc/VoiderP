@@ -3,7 +3,14 @@
         "@main_bg" : "#222831",
         "@main_fg" : "#393E46",
         "@text_color" : "#DFD0B8",
-        "@hover" : "#948979"
+        "@hover" : "#948979",
+        "lexer" : {
+            "@main_text" : "#DFD0B8",
+            "@comment" : "#888888",
+            "@strings" : "#008000",
+            "@keywords" : "#0000FF",
+            "@funcs" : "#FFFF00"
+        }
     },
     "light": {
         "@main_bg" : "#BBAB8C",

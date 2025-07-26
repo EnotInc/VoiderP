@@ -1,9 +1,8 @@
-import json
-
-from PyQt6.Qsci import (QsciScintilla,
-                        QsciLexerPython, QsciLexerCPP, QsciLexerJavaScript, QsciLexerMarkdown)
+from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QFont
+from PyQt6.QtGui import QColor
+
+from ui.editor.lexer import Lexer
 
 class TextEditor(QsciScintilla):
 
@@ -11,6 +10,7 @@ class TextEditor(QsciScintilla):
         super().__init__()
 
         self.config = config
+        self._lexer = Lexer(self.config, self)
 
         self.buffer = text_buffer
         self._sync_with_buffer()
@@ -33,26 +33,6 @@ class TextEditor(QsciScintilla):
         self.setBraceMatching(QsciScintilla.BraceMatch.SloppyBraceMatch)
 
         self.textChanged.connect(self._on_text_changed) 
-
-    #TODO move this to the new lexer.py file    
-    def setup_lexer(self, _paper):
-        lexer = None
-
-        parts = self.config.last_file.split('.')
-        ext = parts[len(parts)-1]
-
-        if ext in ("py", "pyw"):
-            lexer = QsciLexerPython()
-        elif ext in ("cpp", "cc", "cxx", "h", "hxx"):
-            lexer = QsciLexerCPP()
-        elif ext in ("js", "ts"):
-            lexer = QsciLexerJavaScript()
-        elif ext in ("md"):
-            lexer = QsciLexerMarkdown()
-        
-        if lexer:
-            lexer.setPaper(QColor(_paper))
-            self.setLexer(lexer)
 
     def _sync_with_buffer(self):
         self.setText(self.buffer.text)

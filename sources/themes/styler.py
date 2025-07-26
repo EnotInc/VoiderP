@@ -23,12 +23,12 @@ class Styler:
             _paper = themes["@main_fg"]
             _color = themes["@text_color"]
 
-
             _font = QFont()
             _font.setFamily(self.config.font_family)
             _font.setPointSize(self.config.font_size)
 
-            main_window.editor.setup_lexer(_paper)
+            main_window.editor._lexer.setup_lexer()
+            main_window.editor._lexer.current_lexer.setPaper(QColor(_paper))
 
             main_window.editor.setPaper(QColor(_paper))
             main_window.editor.setColor(QColor(_color))

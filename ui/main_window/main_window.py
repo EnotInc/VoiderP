@@ -7,9 +7,10 @@ from core.file_manager import FileManager
 from core.text_buffer import TextBuffer
 
 from ui.editor.editor import TextEditor
+from ui.editor.terminal import Terminal
+
 from ui.main_window.file_tree import TreeView
 from ui.main_window.menu_bar import CustomMenu
-from ui.editor.terminal import Terminal
 
 
 class MainWindow(QMainWindow):
@@ -22,9 +23,10 @@ class MainWindow(QMainWindow):
         self.file_manager = FileManager(config, self.buffer) 
         
         self.editor = TextEditor(self.config, self.buffer)
+        self.terminal = Terminal()
+
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
-        self.terminal = Terminal()
         self.setMenuBar(self.menu_bar)
 
         self.tree_view.doubleClicked.connect(self._file_clicked)
