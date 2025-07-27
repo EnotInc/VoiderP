@@ -31,18 +31,20 @@ class MainWindow(QMainWindow):
 
         self.tree_view.doubleClicked.connect(self._file_clicked)
 
-        main_splitter = QSplitter()
-        editor_splitter = QSplitter(Qt.Orientation.Vertical)
+        self.main_splitter = QSplitter()
+        self.editor_splitter = QSplitter(Qt.Orientation.Vertical)
 
-        editor_splitter.addWidget(self.editor)
-        editor_splitter.addWidget(self.terminal)
-        editor_splitter.setSizes([800, 180])
+        self.editor_splitter.addWidget(self.editor)
+        self.editor_splitter.addWidget(self.terminal)
+        self.editor_splitter.setSizes([800, 180 * self.config.show_terminal])
 
-        main_splitter.addWidget(self.tree_view)
-        main_splitter.addWidget(editor_splitter)
-        main_splitter.setSizes([384, 1000])
+        self.main_splitter.addWidget(self.tree_view)
+        self.main_splitter.addWidget(self.editor_splitter)
+        self.main_splitter.setSizes([384, 1000])
 
-        self.setCentralWidget(main_splitter)
+        self.editor_splitter.splitterMoved.connect(self._splitter_moved)
+
+        self.setCentralWidget(self.main_splitter)
         self.setMinimumSize(400, 300) 
 
         self.menu_bar.theme_trigger.connect(self._apply_theme)
@@ -51,6 +53,7 @@ class MainWindow(QMainWindow):
         self.menu_bar.save_trigger.connect(self._on_save)
         self.menu_bar.save_as_trigger.connect(self._on_save_as)
         self.menu_bar.purge_trigger.connect(self._on_purge_editor)
+        self.menu_bar.terminal_trigger.connect(self._on_terminal)
 
         self.setup_work_space()
  
@@ -102,6 +105,13 @@ class MainWindow(QMainWindow):
         self.editor._sync_with_buffer()
         self.buffer.changed = False
 
+    def _splitter_moved(self):
+        self.config.show_terminal = self.editor_splitter.sizes()[1] > 10
+
+    def _on_terminal(self):
+        self.config.show_terminal = not self.config.show_terminal
+        self.editor_splitter.setSizes([800, 180 * self.config.show_terminal])
+
     def setup_work_space(self):
         self.file_manager.load_file(self.config.last_file)
         self.tree_view.open_folder(self.config.root_path)
@@ -120,6 +130,10 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         if self.buffer.changed:
             self._on_save()
-
+        
+        self.config.maximized = self.isMaximized()
+        self.config.window_w = self.width()
+        self.config.window_h = self.height()
+           
         self.config.save_config()
         event.accept()

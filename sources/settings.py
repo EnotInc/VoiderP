@@ -22,9 +22,8 @@ class ConfigManager:
                     "Size" : 16
                 },
                 "RowNumbers" : 0,
-                "RelativeNumbers" : 0,
-                "SintaxHightlight": 0,
                 "CursorStyle" : 2,
+                "ShowTerminal" : 0
             },
             "keybindings":{
                 "Save" : "Ctrl+S",
@@ -49,6 +48,7 @@ class ConfigManager:
 
         self.row_numbers = self.config["editor"]["RowNumbers"]
         self.cursor_style = self.config["editor"]["CursorStyle"]
+        self.show_terminal = self.config["editor"]["ShowTerminal"]
 		
     def load_config(self):
         try:
@@ -65,8 +65,7 @@ class ConfigManager:
         self.config["files"]["AutoSave"] = self.auto_save
 
         self.config["editor"]["Theme"] = self.theme
-
-		
+	
         self.config["editor"]["Maximized"] = self.maximized
         self.config["editor"]["WindowW"] = self.window_w
         self.config["editor"]["WindowH"] = self.window_h
@@ -76,6 +75,7 @@ class ConfigManager:
 
         self.config["editor"]["RowNumbers"] = self.row_numbers
         self.config["editor"]["CursorStyle"] = self.cursor_style
+        self.config["editor"]["ShowTerminal"] = self.show_terminal
 
         with open(self.config_path, 'w') as f:
             json.dump(self.config, f, indent=2)

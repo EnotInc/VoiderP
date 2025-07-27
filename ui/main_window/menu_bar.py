@@ -8,6 +8,7 @@ class CustomMenu(QMenuBar):
     save_as_trigger = pyqtSignal()
     theme_trigger = pyqtSignal(str)
     purge_trigger = pyqtSignal()
+    terminal_trigger = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -24,14 +25,14 @@ class CustomMenu(QMenuBar):
         file_menu.addSeparator()
         file_menu.addAction("<Preferences>")
         
-
+    
         view_menu = self.addMenu("View")
         
         theme_menu = view_menu.addMenu('Theme')
         view_menu.addAction("Purge Editor", self.purge_trigger.emit)
         view_menu.addAction("<Search>")
         view_menu.addAction("<Command Pallete>")
-        view_menu.addAction("<Terminal>")
+        view_menu.addAction("Terminal", self.terminal_trigger.emit)
         
         theme_menu.addAction("Light", lambda: self.theme_trigger.emit("light"))
         theme_menu.addAction("Dark", lambda: self.theme_trigger.emit('dark'))
