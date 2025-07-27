@@ -7,21 +7,38 @@
         "lexer" : {
             "@main_text" : "#DFD0B8",
             "@comment" : "#888888",
-            "@strings" : "#008000",
-            "@keywords" : "#0000FF",
-            "@funcs" : "#FFFF00"
+            "@strings" : "#A3BE8C",
+            "@keywords" : "#FFFF00",
+            "@number" : "#D08770",
+            "@funcs" : "#61AFEF"
         }
     },
     "light": {
         "@main_bg" : "#BBAB8C",
         "@main_fg" : "#DED0B6",
         "@text_color" : "#3B3030",
-        "@hover" : "#FAEED1"
+        "@hover" : "#FAEED1",
+        "lexer" : {
+            "@main_text" : "#3B3030",
+            "@comment" : "#A8A196",
+            "@strings" : "#008000",
+            "@keywords" : "#CC7722",
+            "@number" : "#B381C2",
+            "@funcs" : "#00008B"
+        }
     },
     "console": {
         "@main_bg" : "black",
         "@main_fg" : "black",
         "@text_color" : "white",
-        "@hover" : "gray"
+        "@hover" : "gray",
+        "lexer" : {
+            "@main_text" : "white",
+            "@comment" : "gray",
+            "@strings" : "#00FF00",
+            "@keywords" : "#FFFF00",
+            "@number" : "#0066FF",
+            "@funcs" : "#00FFFF"
+        }
     }
 }

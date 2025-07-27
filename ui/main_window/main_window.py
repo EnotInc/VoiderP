@@ -69,10 +69,12 @@ class MainWindow(QMainWindow):
     def _file_clicked(self, index):
         self.tree_view.load_file(index)
         self.editor._sync_with_buffer()
+        self._apply_theme(self.styler.current_theme)
 
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
         if path:
+            self._apply_theme(self.styler.current_theme)
             self.file_manager.load_file(path)
             self.editor._sync_with_buffer()
     
@@ -80,6 +82,7 @@ class MainWindow(QMainWindow):
         path = QFileDialog.getExistingDirectory(self, "Open Folder")
         if path:
             self.tree_view.open_folder(path) 
+            self._on_purge_editor()
         
     def _on_save(self):
         if self.file_manager.current_file == "":

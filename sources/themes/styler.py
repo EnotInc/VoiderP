@@ -4,9 +4,11 @@ from PyQt6.QtGui import QColor, QFont
 class Styler:
     def __init__(self, config):
         self.config = config
+        self.current_theme = self.config.config["editor"]["Theme"]
 
     def apply_theme(self, main_window, theme_name):
         try:
+            self.current_theme = theme_name
             theme_file = "sources/themes/style.qss"
             with open(theme_file, "r") as s:
                 _style = s.read()
@@ -14,9 +16,10 @@ class Styler:
             with open("sources/themes/colors.json") as t:
                 themes = json.load(t)[theme_name]
 
-            for var, value in themes.items():
-                _style = _style.replace(var, value)
-
+            _style = _style.replace("@main_bg", themes["@main_bg"])
+            _style = _style.replace("@main_fg", themes["@main_fg"])
+            _style = _style.replace("@text_color", themes["@text_color"])
+            _style = _style.replace("@hover", themes["@hover"])
             _style = _style.replace("@font_size", f"{self.config.font_size}px")
             _style = _style.replace("@font_family", self.config.font_family)
 
@@ -26,7 +29,9 @@ class Styler:
             _font = QFont(self.config.font_family)
             _font.setPointSize(self.config.font_size)
 
-            main_window.editor._lexer.setup_lexer()
+            current_file = main_window.file_manager.current_file 
+            main_window.editor._lexer.setup_lexer(theme=theme_name, path=current_file)
+            
             main_window.editor._lexer.current_lexer.setPaper(QColor(_paper))
 
             main_window.editor.setPaper(QColor(_paper))
@@ -39,5 +44,7 @@ class Styler:
             main_window.editor.setFont(_font)
 
             main_window.setStyleSheet(_style)
+
+            self.config.theme = theme_name
         except Exception as ex:
             print(f"ERROR ad styler.py:\n{ex}")

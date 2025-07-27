@@ -49,7 +49,7 @@ class ConfigManager:
 
         self.row_numbers = self.config["editor"]["RowNumbers"]
         self.cursor_style = self.config["editor"]["CursorStyle"]
-
+		
     def load_config(self):
         try:
             os.makedirs(self.config_dir, exist_ok=True)
@@ -66,6 +66,7 @@ class ConfigManager:
 
         self.config["editor"]["Theme"] = self.theme
 
+		
         self.config["editor"]["Maximized"] = self.maximized
         self.config["editor"]["WindowW"] = self.window_w
         self.config["editor"]["WindowH"] = self.window_h
