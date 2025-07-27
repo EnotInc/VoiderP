@@ -9,6 +9,7 @@ class CustomMenu(QMenuBar):
     theme_trigger = pyqtSignal(str)
     purge_trigger = pyqtSignal()
     terminal_trigger = pyqtSignal()
+    preferences = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -23,7 +24,7 @@ class CustomMenu(QMenuBar):
         file_menu.addAction("Save", self.save_trigger.emit)
         file_menu.addAction("Save As", self.save_as_trigger.emit)
         file_menu.addSeparator()
-        file_menu.addAction("<Preferences>")
+        file_menu.addAction("Preferences", self.preferences.emit)
         
     
         view_menu = self.addMenu("View")

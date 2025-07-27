@@ -6,6 +6,9 @@ class Styler:
         self.config = config
         self.current_theme = self.config.config["editor"]["Theme"]
 
+    def settings_theme(self, settings):
+        pass
+
     def apply_theme(self, main_window, theme_name):
         try:
             self.current_theme = theme_name
@@ -38,10 +41,13 @@ class Styler:
             main_window.editor.setColor(QColor(_color))
             main_window.editor.setMarginsBackgroundColor(QColor(_paper))
             main_window.editor.setMarginsForegroundColor(QColor(_color))
+            main_window.editor.setMarginsFont(_font)
             main_window.editor._lexer.current_lexer.setFont(_font)
-
+            
             main_window.editor._lexer.setFont(_font)
             main_window.editor.setFont(_font)
+
+            main_window.settings.setStyleSheet(_style)
 
             main_window.setStyleSheet(_style)
 

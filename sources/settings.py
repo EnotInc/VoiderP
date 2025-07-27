@@ -22,7 +22,7 @@ class ConfigManager:
                     "Size" : 16
                 },
                 "RowNumbers" : 0,
-                "CursorStyle" : 2,
+                "CursorStyle" : 3,
                 "ShowTerminal" : 0
             },
             "keybindings":{

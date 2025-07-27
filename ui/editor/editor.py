@@ -19,7 +19,7 @@ class TextEditor(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_SETCARETFORE, QColor("#FFFFFF"))
         self.setCaretLineBackgroundColor(QColor("#3A3A3A"))
 
-        self.setWrapMode(QsciScintilla.WrapMode.WrapWord)
+        self.setWrapMode(QsciScintilla.WrapMode.WrapNone)
 
         self.setCaretWidth(3)
 
@@ -33,6 +33,13 @@ class TextEditor(QsciScintilla):
         self.setBraceMatching(QsciScintilla.BraceMatch.SloppyBraceMatch)
 
         self.textChanged.connect(self._on_text_changed) 
+    
+    def _apply_settings(self):
+        self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE, self.config.cursor_style)
+        if self.config.row_numbers:
+            self.setMarginLineNumbers(0, True)
+        else:
+            self.setMarginLineNumbers(0, False)
 
     def _sync_with_buffer(self):
         self.setText(self.buffer.text)

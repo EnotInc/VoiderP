@@ -11,6 +11,7 @@ from ui.editor.terminal import Terminal
 
 from ui.main_window.file_tree import TreeView
 from ui.main_window.menu_bar import CustomMenu
+from ui.main_window.preferences import Preferences
 
 
 class MainWindow(QMainWindow):
@@ -21,6 +22,8 @@ class MainWindow(QMainWindow):
         self.styler = Styler(config)
         self.buffer = TextBuffer()
         self.file_manager = FileManager(config, self.buffer) 
+
+        self.settings = Preferences(self.config)
         
         self.editor = TextEditor(self.config, self.buffer)
         self.terminal = Terminal()
@@ -54,6 +57,7 @@ class MainWindow(QMainWindow):
         self.menu_bar.save_as_trigger.connect(self._on_save_as)
         self.menu_bar.purge_trigger.connect(self._on_purge_editor)
         self.menu_bar.terminal_trigger.connect(self._on_terminal)
+        self.menu_bar.preferences.connect(self._on_preferences)
 
         self.setup_work_space()
  
@@ -111,6 +115,12 @@ class MainWindow(QMainWindow):
     def _on_terminal(self):
         self.config.show_terminal = not self.config.show_terminal
         self.editor_splitter.setSizes([800, 180 * self.config.show_terminal])
+
+    def _on_preferences(self):
+        self.settings.exec()
+        if self.settings.close():
+            self.editor._apply_settings()
+            self._apply_theme(self.styler.current_theme)
 
     def setup_work_space(self):
         self.file_manager.load_file(self.config.last_file)

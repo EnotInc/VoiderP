@@ -48,3 +48,10 @@ QMenu:selected{
 QSplitter::handle{
     background-color: @main_bg
 }
+
+QDialog{
+    background-color: @main_bg
+    color: @text_color;
+    font-size: @font_size;
+    font-family : @font_family;
+}
