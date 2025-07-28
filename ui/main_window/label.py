@@ -6,6 +6,7 @@ class Title(QLabel):
         super().__init__()
         self._text = "Undefined"
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setContentsMargins(0, 0, 0, 0)
         self.setText(self._text)
     
     @property
