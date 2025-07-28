@@ -10,7 +10,7 @@ class FileManager():
     def load_file(self, path):
         try:
             if path != "" and os.path.exists(path):
-                if  self.buffer.changed and self.current_file != "":
+                if self.config.auto_save and self.buffer.changed and self.current_file != "":
                     self.save_file()
                 with open(path, "r", encoding="utf-8") as f:
                     self.current_file = path 
@@ -42,7 +42,8 @@ class FileManager():
             print(e)
     
     def purge_editor(self):
-        self.save_file()
+        if self.config.auto_save:
+            self.save_file()
         self.buffer.text = ""
         self.current_file = ""
         self.config.last_file = ""
@@ -50,12 +51,3 @@ class FileManager():
     def open_folder(self, path):
         self.root_path = path
         self.config.root_path = path
-
-    def create_new_dirrectory():
-        pass
-
-    def remane_item():
-        pass
-
-    def remove_item():
-        pass

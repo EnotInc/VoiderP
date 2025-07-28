@@ -10,7 +10,7 @@ class ConfigManager:
             "files":{
                 "LastFile" : "",
                 "RootPath" : "",
-                "AutoSave" : ""
+                "AutoSave" : 1
             },
             "editor": {
                 "Theme" : "light",
@@ -23,7 +23,8 @@ class ConfigManager:
                 },
                 "RowNumbers" : 0,
                 "CursorStyle" : 3,
-                "ShowTerminal" : 0
+                "ShowTerminal" : 0,
+                "WrapMode" : 0
             },
             "keybindings":{
                 "Save" : "Ctrl+S",
@@ -46,6 +47,7 @@ class ConfigManager:
         self.font_size = self.config["editor"]["Font"]["Size"]
         self.font_family = self.config["editor"]["Font"]["Family"]
 
+        self.wrap_mode = self.config["editor"]["WrapMode"]
         self.row_numbers = self.config["editor"]["RowNumbers"]
         self.cursor_style = self.config["editor"]["CursorStyle"]
         self.show_terminal = self.config["editor"]["ShowTerminal"]
@@ -76,6 +78,7 @@ class ConfigManager:
         self.config["editor"]["RowNumbers"] = self.row_numbers
         self.config["editor"]["CursorStyle"] = self.cursor_style
         self.config["editor"]["ShowTerminal"] = self.show_terminal
+        self.config["editor"]["WrapMode"] = self.wrap_mode
 
         with open(self.config_path, 'w') as f:
             json.dump(self.config, f, indent=2)

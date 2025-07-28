@@ -33,12 +33,20 @@ class TextEditor(QsciScintilla):
         self.setBraceMatching(QsciScintilla.BraceMatch.SloppyBraceMatch)
 
         self.textChanged.connect(self._on_text_changed) 
+
+        self._apply_settings()
     
     def _apply_settings(self):
         self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE, self.config.cursor_style)
+
+        if self.config.wrap_mode:
+            self.setWrapMode(QsciScintilla.WrapMode.WrapWord)
+        else:
+            self.setWrapMode(QsciScintilla.WrapMode.WrapNone)
+
         if self.config.row_numbers:
             self.setMarginLineNumbers(0, True)
-        else:
+        else: 
             self.setMarginLineNumbers(0, False)
 
     def _sync_with_buffer(self):

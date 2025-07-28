@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
         self._apply_theme(self.config.theme)
 
     def closeEvent(self, event):
-        if self.buffer.changed:
+        if self.config.auto_save and self.buffer.changed:
             self._on_save()
         
         self.config.maximized = self.isMaximized()

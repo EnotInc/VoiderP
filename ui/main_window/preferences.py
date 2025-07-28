@@ -19,16 +19,34 @@ class Preferences(QDialog):
         show_numbers.addWidget(self.line_numbers)
         show_numbers.addWidget(self.line_checkbox)
 
+        auto_save = QHBoxLayout()
+        self.should_save = QLabel("Save file on close") 
+        self.save = QCheckBox()
+        self.save.setChecked(self.config.auto_save)
+        auto_save.addWidget(self.should_save)
+        auto_save.addWidget(self.save)
+
+        wrap_mode = QHBoxLayout() 
+        self.what_mode = QLabel("Choose carret type: ")
+        self.cb_mode = QComboBox()
+        self.cb_mode.addItem("No Wrap")
+        self.cb_mode.addItem("Wrap")
+        self.cb_mode.setCurrentIndex(self.config.wrap_mode)
+        wrap_mode.addWidget(self.what_mode)
+        wrap_mode.addWidget(self.cb_mode)
+
         carret_type = QHBoxLayout() 
         self.what_carret = QLabel("Choose carret type: ")
-        self.combobox = QComboBox()
-        self.combobox.addItem("Thin")
-        self.combobox.addItem("Box")
-        self.combobox.setCurrentIndex(self.config.cursor_style - 1)
+        self.cb_carret = QComboBox()
+        self.cb_carret.addItem("Thin")
+        self.cb_carret.addItem("Box")
+        self.cb_carret.setCurrentIndex(self.config.cursor_style - 1)
         carret_type.addWidget(self.what_carret)
-        carret_type.addWidget(self.combobox)
+        carret_type.addWidget(self.cb_carret)
         
+        layout.addLayout(auto_save)
         layout.addLayout(show_numbers)
+        layout.addLayout(wrap_mode)
         layout.addLayout(carret_type)
 
         self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close|
@@ -51,8 +69,10 @@ class Preferences(QDialog):
         super().reject()
     
     def save_config(self):
+        self.config.auto_save = self.save.isChecked()
         self.config.row_numbers = self.line_checkbox.isChecked()
-        self.config.cursor_style = self.combobox.currentIndex() + 1
+        self.config.wrap_mode = self.cb_mode.currentIndex()
+        self.config.cursor_style = self.cb_carret.currentIndex() + 1
 
     def _center_of_monitor(self):
         screen_geometry = self.screen().availableGeometry()
