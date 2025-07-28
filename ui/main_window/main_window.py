@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt
 
 from sources.themes.styler import Styler
@@ -10,6 +10,7 @@ from ui.editor.editor import TextEditor
 from ui.editor.terminal import Terminal
 
 from ui.main_window.file_tree import TreeView
+from ui.main_window.label import Title
 from ui.main_window.menu_bar import CustomMenu
 from ui.main_window.preferences import Preferences
 
@@ -28,6 +29,7 @@ class MainWindow(QMainWindow):
         self.editor = TextEditor(self.config, self.buffer)
         self.terminal = Terminal()
 
+        self.title = Title()
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
         self.setMenuBar(self.menu_bar)
@@ -41,8 +43,14 @@ class MainWindow(QMainWindow):
         self.editor_splitter.addWidget(self.terminal)
         self.editor_splitter.setSizes([800, 180 * self.config.show_terminal])
 
+        work_space_widget = QWidget()
+        self.work_space = QVBoxLayout()
+        self.work_space.addWidget(self.title)
+        self.work_space.addWidget(self.editor_splitter)
+        work_space_widget.setLayout(self.work_space)
+
         self.main_splitter.addWidget(self.tree_view)
-        self.main_splitter.addWidget(self.editor_splitter)
+        self.main_splitter.addWidget(work_space_widget)
         self.main_splitter.setSizes([384, 1000])
 
         self.editor_splitter.splitterMoved.connect(self._splitter_moved)
@@ -77,6 +85,7 @@ class MainWindow(QMainWindow):
         self.tree_view.load_file(index)
         self.editor._sync_with_buffer()
         self._apply_theme(self.styler.current_theme)
+        self.title.text = self.file_manager.current_file
 
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
@@ -125,6 +134,7 @@ class MainWindow(QMainWindow):
     def setup_work_space(self):
         self.file_manager.load_file(self.config.last_file)
         self.tree_view.open_folder(self.config.root_path)
+        self.title.text = self.file_manager.current_file
 
         self.WindowW = self.config.window_w
         self.WindowH = self.config.window_h

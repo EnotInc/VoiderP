@@ -2,13 +2,6 @@ QMainWindow{
     background-color: @main_bg;
 }
 
-QPlainTextEdit{
-    background-color: @main_fg;
-    color: @text_color;
-    font-size: @font_size;
-    font-family : @font_family;
-}
-
 QTreeView{
     background-color: @main_fg;
     color: @text_color;
@@ -49,8 +42,8 @@ QSplitter::handle{
     background-color: @main_bg
 }
 
-QDialog{
-    background-color: @main_bg
+QLabel{
+    background-color: @main_bg;
     color: @text_color;
     font-size: @font_size;
     font-family : @font_family;
