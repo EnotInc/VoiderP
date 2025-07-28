@@ -9,6 +9,13 @@ QTreeView{
     font-family : @font_family;
 }
 
+Preferences{
+    background-color: @main_fg;
+    color: @text_color;
+    font-size: @font_size;
+    font-family : @font_family;
+}
+
 QMenuBar{
     background-color: @main_bg;
     color: @main_fg;
