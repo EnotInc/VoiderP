@@ -51,3 +51,17 @@ class FileManager():
     def open_folder(self, path):
         self.root_path = path
         self.config.root_path = path
+    
+    def rename_file(self, file_name):
+        try:
+            os.rename(self.current_file, file_name)
+            parts = self.current_file.split('/')
+            parts[len(parts)-1] = file_name 
+
+            file = ""
+            for part in parts:
+                file += part + "/"
+            file = file[:len(file)-1]
+            self.current_file = file
+        except Exception as ex:
+            print(ex)

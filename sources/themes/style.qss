@@ -56,6 +56,9 @@ QLabel{
     font-family : @font_family;
 }
 
-Title{
-    background-color: @main_bg;
+QLineEdit{
+    background-color: @main_fg;
+    color: @text_color;
+    font-size: @font_size;
+    font-family : @font_family;
 }

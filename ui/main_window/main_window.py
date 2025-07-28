@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
         self.terminal = Terminal()
 
         self.title = Title()
+        self.title.textChanged.connect(self._name_changed)
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
         self.setMenuBar(self.menu_bar)
@@ -118,6 +119,9 @@ class MainWindow(QMainWindow):
         self.editor._sync_with_buffer()
         self.buffer.changed = False
 
+    def _name_changed(self):
+        self.file_manager.rename_file(self.title.text)
+
     def _splitter_moved(self):
         self.config.show_terminal = self.editor_splitter.sizes()[1] > 10
 
@@ -151,6 +155,7 @@ class MainWindow(QMainWindow):
         if self.config.auto_save and self.buffer.changed:
             self._on_save()
         
+        self.config.last_file = self.file_manager.current_file
         self.config.maximized = self.isMaximized()
         self.config.window_w = self.width()
         self.config.window_h = self.height()
