@@ -34,9 +34,13 @@ class Terminal(QWidget):
     def run_script(self):
         script = self.script_edit.text()
         try:
-            result = subprocess.run(["powershell", script], capture_output=True, text=True)
-            output = result.stdout.encode('cp1251').decode('cp866')
-            output = output.replace("\n\r", "\n").replace("\r", "\n")
-            self.text.append(output)
+            if self.script_edit.text() == "clear" or self.script_edit.text() == "cls":
+                self.text.setText("")
+            else:
+                result = subprocess.run(["powershell", script], capture_output=True, text=True)
+                output = result.stdout.encode('cp1251').decode('cp866')
+                output = output.replace("\n\r", "\n").replace("\r", "\n")
+                self.text.append(output)
+            self.script_edit.setText("")
         except Exception as ex:
             print(ex)
