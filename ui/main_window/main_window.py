@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         self.terminal = Terminal()
 
         self.title = Title()
-        self.title.textChanged.connect(self._name_changed)
+        #self.title.textChanged.connect(self._name_changed)
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
         self.setMenuBar(self.menu_bar)

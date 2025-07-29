@@ -6,6 +6,7 @@ class Title(QLineEdit):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setContentsMargins(0, 0, 0, 0)
+        self.setReadOnly(True)
     
     @property
     def text(self):
