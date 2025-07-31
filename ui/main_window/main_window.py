@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMainWindow, QSplitter, QFileDialog, QVBoxLayout, QWidget, QStackedWidget
 from PyQt6.QtCore import Qt
 
 from sources.themes.styler import Styler
@@ -13,6 +13,7 @@ from ui.main_window.file_tree import TreeView
 from ui.main_window.label import Title
 from ui.main_window.menu_bar import CustomMenu
 from ui.main_window.preferences import Preferences
+from ui.main_window.hello_page import Voider
 
 
 class MainWindow(QMainWindow):
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow):
         self.editor = TextEditor(self.config, self.buffer)
         self.terminal = Terminal()
 
+        self.voider = Voider()
         self.title = Title()
         self.title.rename_trigger.connect(self._name_changed)
         self.tree_view = TreeView(self.config, self.file_manager)
@@ -39,6 +41,7 @@ class MainWindow(QMainWindow):
 
         self.main_splitter = QSplitter()
         self.editor_splitter = QSplitter(Qt.Orientation.Vertical)
+        self.page = QStackedWidget()
 
         self.editor_splitter.addWidget(self.editor)
         self.editor_splitter.addWidget(self.terminal)
@@ -50,8 +53,11 @@ class MainWindow(QMainWindow):
         self.work_space.addWidget(self.editor_splitter)
         work_space_widget.setLayout(self.work_space)
 
+        self.page.addWidget(self.voider)
+        self.page.addWidget(work_space_widget)
+
         self.main_splitter.addWidget(self.tree_view)
-        self.main_splitter.addWidget(work_space_widget)
+        self.main_splitter.addWidget(self.page)
         self.main_splitter.setSizes([384, 1000])
 
         self.editor_splitter.splitterMoved.connect(self._splitter_moved)
@@ -87,6 +93,7 @@ class MainWindow(QMainWindow):
         self.editor._sync_with_buffer()
         self._apply_theme(self.styler.current_theme)
         self.title.set_title(self.file_manager.current_file)
+        self.page.setCurrentIndex(1)
 
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
@@ -94,12 +101,14 @@ class MainWindow(QMainWindow):
             self._apply_theme(self.styler.current_theme)
             self.file_manager.load_file(path)
             self.editor._sync_with_buffer()
+            self.page.setCurrentIndex(1)
     
     def _on_open_folder(self):
         path = QFileDialog.getExistingDirectory(self, "Open Folder")
         if path:
             self.tree_view.open_folder(path) 
             self._on_purge_editor()
+            self.page.setCurrentIndex(1)
         
     def _on_save(self):
         if self.file_manager.current_file == "":
@@ -118,6 +127,7 @@ class MainWindow(QMainWindow):
         self.file_manager.purge_editor()
         self.editor._sync_with_buffer()
         self.buffer.changed = False
+        self.page.setCurrentIndex(0)
 
     def _name_changed(self):
         self.file_manager.rename_file(self.title.text())
@@ -139,6 +149,11 @@ class MainWindow(QMainWindow):
         self.file_manager.load_file(self.config.last_file)
         self.tree_view.open_folder(self.config.root_path)
         self.title.set_title(self.file_manager.current_file)
+
+        if self.file_manager.current_file == "":
+            self.page.setCurrentIndex(0)
+        else:
+            self.page.setCurrentIndex(1)
 
         self.WindowW = self.config.window_w
         self.WindowH = self.config.window_h

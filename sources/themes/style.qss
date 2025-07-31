@@ -62,3 +62,10 @@ QLineEdit{
     font-size: @font_size;
     font-family : @font_family;
 }
+
+Voider{
+    background-color: @main_fg;
+    color: @text_color;
+    font-size: @font_size;
+    font-family : @font_family;
+}

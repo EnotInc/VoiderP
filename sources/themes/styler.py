@@ -6,9 +6,6 @@ class Styler:
         self.config = config
         self.current_theme = self.config.config["editor"]["Theme"]
 
-    def settings_theme(self, settings):
-        pass
-
     def apply_theme(self, main_window, theme_name):
         try:
             self.current_theme = theme_name
