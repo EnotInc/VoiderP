@@ -53,15 +53,14 @@ class FileManager():
         self.config.root_path = path
     
     def rename_file(self, file_name):
-        try:
-            os.rename(self.current_file, file_name)
-            parts = self.current_file.split('/')
-            parts[len(parts)-1] = file_name 
+        try: 
+            if self.current_file == "":
+                return     
+            oldname = self.current_file.split("/")[-1]
+            new_path = self.current_file.replace(oldname, file_name)
+            os.rename(self.current_file, new_path)
+            self.current_file = new_path
+            self.config.last_file = new_path
 
-            file = ""
-            for part in parts:
-                file += part + "/"
-            file = file[:len(file)-1]
-            self.current_file = file
         except Exception as ex:
             print(ex)

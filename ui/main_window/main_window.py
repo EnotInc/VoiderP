@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         self.terminal = Terminal()
 
         self.title = Title()
-        #self.title.textChanged.connect(self._name_changed)
+        self.title.rename_trigger.connect(self._name_changed)
         self.tree_view = TreeView(self.config, self.file_manager)
         self.menu_bar = CustomMenu()
         self.setMenuBar(self.menu_bar)
@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
         self.tree_view.load_file(index)
         self.editor._sync_with_buffer()
         self._apply_theme(self.styler.current_theme)
-        self.title.text = self.file_manager.current_file
+        self.title.set_title(self.file_manager.current_file)
 
     def _on_load(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open File")
@@ -120,7 +120,7 @@ class MainWindow(QMainWindow):
         self.buffer.changed = False
 
     def _name_changed(self):
-        self.file_manager.rename_file(self.title.text)
+        self.file_manager.rename_file(self.title.text())
 
     def _splitter_moved(self):
         self.config.show_terminal = self.editor_splitter.sizes()[1] > 10
@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
     def setup_work_space(self):
         self.file_manager.load_file(self.config.last_file)
         self.tree_view.open_folder(self.config.root_path)
-        self.title.text = self.file_manager.current_file
+        self.title.set_title(self.file_manager.current_file)
 
         self.WindowW = self.config.window_w
         self.WindowH = self.config.window_h

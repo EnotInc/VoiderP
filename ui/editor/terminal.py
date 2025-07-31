@@ -1,7 +1,6 @@
 import subprocess
 
 from PyQt6.QtWidgets import QWidget, QTextEdit, QLineEdit, QVBoxLayout
-from PyQt6.QtGui import QShortcut, QKeySequence
 
 class Terminal(QWidget):
     def __init__(self):
@@ -28,8 +27,7 @@ class Terminal(QWidget):
 
         self.setLayout(layout)
 
-        self.quitSc = QShortcut(QKeySequence("Return"), self)
-        self.quitSc.activated.connect(self.run_script)
+        self.script_edit.returnPressed.connect(self.run_script)
 
     def run_script(self):
         script = self.script_edit.text()

@@ -1,19 +1,21 @@
+import os
 from PyQt6.QtWidgets import QLineEdit
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 
 class Title(QLineEdit):
+
+    rename_trigger = pyqtSignal()
+
     def __init__(self):
         super().__init__()
+        self.returnPressed.connect(self.rename)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setContentsMargins(0, 0, 0, 0)
-        self.setReadOnly(True)
     
-    @property
-    def text(self):
-        return super().text()
+    def rename(self):
+        self.rename_trigger.emit()
     
-    @text.setter
-    def text(self, value):
-        parts = value.split('/')
-        name = parts[len(parts) - 1]
-        self.setText(name)
+    def set_title(self, value):
+        if value:
+            name = os.path.basename(value)
+            self.setText(name)
